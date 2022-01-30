@@ -17,7 +17,9 @@ import {
   useColorScheme,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal,
+  ImageBackground
 } from 'react-native';
 
 import {
@@ -28,6 +30,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Hero from './components/HeroItem';
+import counter from '../native-components/src/Counter';
 
 
 
@@ -42,10 +45,13 @@ const App = () => {
   const [charac, setCharac] = useState([])
 
   var char = []
+
+  const [total, setTotal] = useState()
+  const [visibleModal, setVisibleModal] = useState(false)
   
   
   //_________________________________________________________________________________________________________________________________________________
-  useEffect(()=> RequireHeroes() ,[hash])
+  useEffect(()=> {RequireHeroes() },[hash])
    
 
 
@@ -64,8 +70,8 @@ const App = () => {
       char = [...res.data.results]
 
       setCharac([...char])      
-
-      //char.map ((item)=>console.log(item.thumbnail.path))     
+      setTotal(counter(char))
+      char.map ((item)=>console.log(item))     
      
       
 
@@ -90,12 +96,16 @@ const App = () => {
   
         <View style={{height:50}}/>
 
+        <Text style={{textAlign:'center', fontSize:20, fontWeight:'500'}}>Total de {total} Heróis</Text>
+
         <FlatList style={{}}
         contentContainerStyle={{marginVertical:5}}
         data={charac}
         keyExtractor={item => String(item.id)}
         renderItem={({item}) => <Hero char={item}/>}>
         </FlatList>     
+
+        
       
      
     </ScrollView>
